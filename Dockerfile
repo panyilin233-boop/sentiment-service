@@ -8,4 +8,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY sentiment_model.pkl .
 COPY app.py .
 
-CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:$PORT"]
+CMD gunicorn app:app --bind 0.0.0.0:$PORT
