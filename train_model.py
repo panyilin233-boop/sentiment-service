@@ -1,21 +1,44 @@
-import joblib
+from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.pipeline import Pipeline
-from sklearn.datasets import fetch_20newsgroups
+import joblib
 
-# 使用 20newsgroups 的两个类别模拟情感数据
-categories = ['rec.sport.baseball', 'sci.space']
-data = fetch_20newsgroups(subset='train', categories=categories, shuffle=True, random_state=42)
-X_train = data.data
-y_train = data.target
+# 本地小样本训练数据
+texts = [
+    "I love this movie",
+    "This film is amazing",
+    "What a great experience",
+    "Absolutely fantastic and wonderful",
+    "I really liked it",
+    "This is the best thing ever",
+    "I hate this movie",
+    "This film is terrible",
+    "What a bad experience",
+    "Absolutely awful and boring",
+    "I really disliked it",
+    "This is the worst thing ever",
+    "The product is excellent",
+    "Very happy with the result",
+    "Superb quality and service",
+    "The product is horrible",
+    "Very disappointed with the result",
+    "Terrible quality and service"
+]
 
-# 构建 pipeline
+labels = [
+    1, 1, 1, 1, 1, 1,
+    0, 0, 0, 0, 0, 0,
+    1, 1, 1,
+    0, 0, 0
+]
+
+# 用 pipeline，把向量化和分类器一起保存
 model = Pipeline([
-    ('tfidf', TfidfVectorizer(stop_words='english', max_features=5000)),
-    ('clf', LogisticRegression(max_iter=1000))
+    ("tfidf", TfidfVectorizer()),
+    ("clf", LogisticRegression())
 ])
 
-model.fit(X_train, y_train)
-joblib.dump(model, 'sentiment_model.pkl')
-print("模型已保存为 sentiment_model.pkl")
+model.fit(texts, labels)
+
+joblib.dump(model, "sentiment_model.pkl")
+print("Model saved as sentiment_model.pkl")
