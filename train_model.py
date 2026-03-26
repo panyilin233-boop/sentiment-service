@@ -3,7 +3,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 import joblib
 
-# 本地小样本训练数据
 texts = [
     "I love this movie",
     "This film is amazing",
@@ -32,7 +31,6 @@ labels = [
     0, 0, 0
 ]
 
-# 用 pipeline，把向量化和分类器一起保存
 model = Pipeline([
     ("tfidf", TfidfVectorizer()),
     ("clf", LogisticRegression())
